@@ -8,6 +8,9 @@ M.ui = {
     DiffDelete = {fg = "NONE", bg = "#382b2c"},
     DiffText =   {fg = "NONE", bg = "#2c5372"},
   },
+  hl_add = {
+    TerminalBackground =   {bg = "#0a0c0f"},
+  },
   statusline = {
     theme = "default",
     separator_style = "block",

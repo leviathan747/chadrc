@@ -30,14 +30,20 @@ local plugins = {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- Useful status updates for LSP
-      { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
        require "plugins.configs.lspconfig"
        require "custom.configs.lspconfig"
     end,
   },
+
+  -- Useful status updates for LSP
+  {
+		"j-hui/fidget.nvim",
+		requires = { "neovim/nvim-lspconfig" },
+		tag = "legacy",
+		config = true,
+	},
 
   -- default language servers
   {
@@ -49,7 +55,14 @@ local plugins = {
         "debugpy",
       },
     },
-  }
+  },
+
+  'nvim-treesitter/nvim-treesitter-context',
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = {'nvim-treesitter/nvim-treesitter-context'},
+  },
 
 }
 
