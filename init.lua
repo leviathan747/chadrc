@@ -8,10 +8,33 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
 		vim.opt.relativenumber = false
 		vim.opt.number = false
 		-- set background color
-    print("HI LEVI")
 		vim.api.nvim_set_option_value("winhl", "Normal:TerminalBackground", { win = vim.api.nvim_get_current_win() })
 	end,
 })
+
+function EscapePair()
+	local closers = { ")", "]", "}", ">", "'", '"', "`", "," }
+	local line = vim.api.nvim_get_current_line()
+	local row = vim.fn.line(".")
+	local col = vim.fn.virtcol(".")
+	local after = line:sub(col + 1, -1)
+	local closer_col = #after + 1
+	local closer_i = nil
+	for i, closer in ipairs(closers) do
+		local cur_index, _ = after:find(closer)
+		if cur_index and (cur_index < closer_col) then
+			closer_col = cur_index
+			closer_i = i
+		end
+	end
+	if closer_i then
+		vim.api.nvim_win_set_cursor(0, { row, col + closer_col })
+	else
+		vim.api.nvim_win_set_cursor(0, { row, col + 1 })
+	end
+end
+
+vim.api.nvim_set_keymap("i", "<C-l>", "<cmd>lua EscapePair()<CR>", { noremap = true, silent = true })
 
 -- TODO clean this up
 -- local dap = require('dap')

@@ -32,10 +32,17 @@ local plugins = {
 					null_ls.setup({
 						sources = {
 							null_ls.builtins.formatting.stylua,
-							null_ls.builtins.completion.spell,
-              null_ls.builtins.code_actions.gitsigns,
+							-- null_ls.builtins.completion.spell,
+							null_ls.builtins.code_actions.gitsigns,
+							null_ls.builtins.formatting.clang_format,
 						},
 					})
+				end,
+			},
+			{
+				"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
+				config = function()
+					require("toggle_lsp_diagnostics").init()
 				end,
 			},
 		},
@@ -48,7 +55,7 @@ local plugins = {
 	-- DAP setup TODO
 	{
 		"mfussenegger/nvim-dap",
-    dependencies = {
+		dependencies = {
 			-- TODO (not set up)
 			-- {
 			--   'mfussenegger/nvim-dap-python',
@@ -56,7 +63,7 @@ local plugins = {
 			-- {
 			--   'rcarriga/nvim-dap-ui',
 			-- },
-    },
+		},
 	},
 
 	-- default language servers
@@ -67,10 +74,12 @@ local plugins = {
 				-- launguage servers
 				"lua-language-server",
 				"python-lsp-server",
+				"clangd",
 				-- debuggers
 				"debugpy",
 				-- code formatters
 				"stylua",
+				"clang-format",
 			},
 		},
 	},
@@ -101,11 +110,11 @@ local plugins = {
 		end,
 	},
 
-  -- fugitive
-  {
-    "tpope/vim-fugitive",
-    lazy = false,
-  },
+	-- fugitive
+	{
+		"tpope/vim-fugitive",
+		lazy = false, -- TODO
+	},
 
 	-- Terminal sizing options
 	{
@@ -124,6 +133,39 @@ local plugins = {
 			},
 		},
 	},
+
+	-- open files from terimnal instances in current vim
+	{
+		"willothy/flatten.nvim",
+		config = true,
+		lazy = false,
+		priority = 1001,
+    enabled = false,  -- TODO not fully working
+	},
+
+  -- nvim tree sizing options
+	{
+		"nvim-tree/nvim-tree.lua",
+		opts = function()
+			local opts = {
+				view = {
+					adaptive_size = true,
+					width = {
+						min = 30,
+						max = 50,
+					},
+				},
+			}
+			return vim.tbl_deep_extend("force", require("plugins.configs.nvimtree"), opts)
+		end,
+	},
+
+  {
+    "sindrets/diffview.nvim",
+		config = true,
+		lazy = false, -- TODO
+  },
+
 }
 
 return plugins
